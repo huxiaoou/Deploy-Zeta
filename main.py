@@ -25,8 +25,10 @@ if __name__ == "__main__":
         cfg,
         cfg_tables,
         cfg_dbs,
+        data_desc_fac_raw,
         data_desc_preprocess,
         data_desc_pv1m,
+        data_desc_avlb,
     )
 
     args = parse_args()
@@ -46,4 +48,18 @@ if __name__ == "__main__":
                 data_desc_pv1m=data_desc_pv1m,
                 dst_db=cfg_dbs.user,
                 table_fac_raw=cfg_tables.fac_raw,
+            )
+        elif args.type == "nrm":
+            from solutions.nrm import main_process_factors_nrm
+            from config import universe_sector
+
+            main_process_factors_nrm(
+                span=span,
+                codes=codes,
+                cfg_factors=cfg.factors,
+                data_desc_avlb=data_desc_avlb,
+                data_desc_fac_raw=data_desc_fac_raw,
+                universe_sector=universe_sector,
+                dst_db=cfg_dbs.user,
+                table_fac_neu=cfg_tables.fac_nrm,
             )
