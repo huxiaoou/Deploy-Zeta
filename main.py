@@ -26,6 +26,7 @@ if __name__ == "__main__":
         cfg_tables,
         cfg_dbs,
         data_desc_fac_raw,
+        data_desc_fac_nrm,
         data_desc_preprocess,
         data_desc_pv1m,
         data_desc_avlb,
@@ -62,4 +63,16 @@ if __name__ == "__main__":
                 universe_sector=universe_sector,
                 dst_db=cfg_dbs.user,
                 table_fac_neu=cfg_tables.fac_nrm,
+            )
+        elif args.type == "sig":
+            from solutions.sig import main_process_factor_sig
+
+            main_process_factor_sig(
+                span=span,
+                codes=codes,
+                cfg_factors=cfg.factors,
+                data_desc_avlb=data_desc_avlb,
+                data_desc_fac_nrm=data_desc_fac_nrm,
+                dst_db=cfg_dbs.user,
+                table_fac_sig=cfg_tables.fac_sig,
             )
