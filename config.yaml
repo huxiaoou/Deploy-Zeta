@@ -6,6 +6,7 @@ dbs:
   user: huxiaoou_private
 project_data_dir: /root/workspace/Data/huxo/Deploy-Zeta
 path_calendar: /root/workspace/Data/huxo/input/calendar/cne_calendar.csv
+
 universe:
   AU9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
   AG9999_SHFE: { "sectorL0": "C", "sectorL1": "AUG" }
@@ -57,6 +58,124 @@ universe:
   LH9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
   C9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
   CS9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
+
+# --- factors ---
 factors:
   reoc:
     args: [240, 3]
+
+# --- simluations ---
+csim:
+  init_cash: 100_000_000.00
+  oi_cap_ratio: 0.01
+  cost_rate_sub: 0.0000
+  cost_rate_pri: 0.0003
+
+# --- source tables ---
+src_tables:
+  preprocess:
+    table_name: "preprocess"
+    fields:
+      - "code_major"
+      - "open_major"
+      - "high_major"
+      - "low_major"
+      - "close_major"
+      - "settle_major"
+      - "volume_major"
+      - "amt_major"
+      - "open_interest_major"
+      - "pre_open_major"
+      - "pre_close_major"
+      - "pre_settle_major"
+      - "pre_opn_ret_major"
+      - "pre_cls_ret_major"
+      - "pre_stl_ret_major"
+      - "multiplier_major"
+      - "code_minor"
+      - "open_minor"
+      - "high_minor"
+      - "low_minor"
+      - "close_minor"
+      - "settle_minor"
+      - "volume_minor"
+      - "amt_minor"
+      - "open_interest_minor"
+      - "pre_open_minor"
+      - "pre_close_minor"
+      - "pre_settle_minor"
+      - "pre_opn_ret_minor"
+      - "pre_cls_ret_minor"
+      - "pre_stl_ret_minor"
+      - "multiplier_minor"
+      - "basis"
+      - "basis_rate"
+      - "basis_annual"
+      - "stock"
+    lag: 20
+    data_view_type: data3d
+  dominant:
+    table_name: "dominant"
+    fields:
+      - "code" # string, "CF"
+      - "trade_day" # string, "2025-08-19"
+      - "dominant" # string, "CF2601_CZCE"
+      - "datetime" # timestamp, "2025-08-18 21:00:00"
+    lag: 20
+    data_view_type: data3d
+  avlb:
+    table_name: "avlb"
+    fields:
+      - "avlb" # int, 1 for "avlb", 0 for "unavlb"
+      - "amt" # float, amount aka "turnover"
+    lag: 20
+    data_view_type: data3d
+  icov:
+    table_name: "icov"
+    lag: 120
+    data_view_type: data3d
+  css:
+    table_name: "css"
+    codes:
+      - "VOL"
+      - "VMA"
+      - "TOTWGT"
+    fields:
+      - "val"
+    lag: 60
+    data_view_type: data3d
+  srets:
+    table_name: "srets"
+    fields:
+      - "opn"
+      - "cls"
+    lag: 60
+    data_view_type: data3d
+  pv1m:
+    db_name: "meta_data"
+    table_name: "future_bar_1min"
+    fields:
+      - open
+      - high
+      - low
+      - close
+      - volume
+      - turnover
+      - open_interest
+      - pre_open
+      - pre_close
+      - pre_open_ret
+      - pre_close_ret
+      - trade_day
+    lag: 20
+    data_view_type: data3d
+  cpv:
+    db_name: "meta_data"
+    table_name: "contracts_bar_1day"
+    fields:
+      - open
+      - close
+      - settle
+      - contractmultiplier
+    lag: 20
+    data_view_type: data3d

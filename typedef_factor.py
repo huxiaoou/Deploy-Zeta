@@ -16,7 +16,7 @@ class CCfgFactor:
         raise NotImplementedError
 
 
-TInterFactorData = dict[str, Union[dict, pd.DataFrame]]
+TInterFactorData = dict[str, Union[dict[str, pd.Series], pd.DataFrame]]
 
 
 class CAlgFactor:
