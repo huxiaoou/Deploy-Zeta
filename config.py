@@ -13,7 +13,11 @@ universe: TUniverse = {k: CCfgInstru(**v) for k, v in _config["universe"].items(
 universe_sector: dict[str, str] = {k: v.sectorL1 for k, v in universe.items()}
 sectors: TSectors = sorted(list(set([v.sectorL1 for v in universe.values()])))
 
-cfg_factors = CCfgFactors(algs_dir="factor_algs", cfg_data=_config["factors"])
+cfg_factors = CCfgFactors(
+    algs_dir="factor_algs",
+    cfg_data=_config["factors"],
+    default_decay=_config["default_decay"],
+)
 
 cfg = CCfgProj(
     pid=_config["project_id"],

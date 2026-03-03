@@ -60,6 +60,10 @@ universe:
   CS9999_DCE: { "sectorL0": "C", "sectorL1": "AGR" }
 
 # --- factors ---
+default_decay:
+  rate: 1.0
+  win: 5
+
 factors:
   reoc:
     args: [240, 3]

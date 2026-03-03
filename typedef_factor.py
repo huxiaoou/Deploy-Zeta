@@ -1,14 +1,30 @@
 import datetime as dt
+import numpy as np
 import pandas as pd
 import os
 from dataclasses import dataclass
 from typing import Any, Union
 
 
+@dataclass
+class CDecay:
+    rate: float
+    win: int
+
+    def __post_init__(self):
+        rou = np.power(self.rate, 1 / (self.win - 1)) if self.win > 1 else 1.0
+        wgt = np.power(rou, np.arange(self.win, 0, -1))
+        self.wgt = wgt / wgt.sum()
+
+    def __str__(self) -> str:
+        return f"CDecayR{int(self.rate * 10):02d}W{self.win:02d}"
+
+
 @dataclass(frozen=True)
 class CCfgFactor:
     name: str
     args: Any
+    decay: CDecay
     risk: bool
 
     @property
@@ -53,7 +69,7 @@ TMgrCfgAlg = dict[str, tuple[CCfgFactor, CAlgFactor]]
 
 
 class CCfgFactors:
-    def __init__(self, algs_dir: str, cfg_data: dict[str, dict]):
+    def __init__(self, algs_dir: str, cfg_data: dict[str, dict], default_decay: dict):
         self.mgr: TMgrCfgAlg = {}
         for module in sorted(os.listdir(algs_dir)):
             if module.endswith(".py"):
@@ -66,6 +82,7 @@ class CCfgFactors:
                 cfg = type_cfg(
                     name=factor,
                     args=v["args"],
+                    decay=CDecay(**v.get("decay", default_decay)),
                     risk=v.get("risk", False),
                 )
                 alg = type_alg(cfg=cfg)
@@ -90,3 +107,12 @@ class CCfgFactors:
         for factor, (cfg, alg) in self.mgr.items():
             print(f"{i:>02d} |{factor:>12s} = {cfg}, {alg}")
             i += 1
+
+    def get_factor_cfg(self, factor: str) -> CCfgFactor:
+        return self.mgr[factor][0]
+
+    def get_factors_wgts(self) -> dict[str, np.ndarray]:
+        res: dict[str, np.ndarray] = {}
+        for factor, (cfg, alg) in self.mgr.items():
+            res[factor] = cfg.decay.wgt
+        return res

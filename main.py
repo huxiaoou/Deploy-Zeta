@@ -27,6 +27,8 @@ if __name__ == "__main__":
         cfg_dbs,
         data_desc_fac_raw,
         data_desc_fac_nrm,
+        data_desc_fac_sig,
+        data_desc_fac_ewa,
         data_desc_preprocess,
         data_desc_pv1m,
         data_desc_avlb,
@@ -75,4 +77,16 @@ if __name__ == "__main__":
                 data_desc_fac_nrm=data_desc_fac_nrm,
                 dst_db=cfg_dbs.user,
                 table_fac_sig=cfg_tables.fac_sig,
+            )
+        elif args.type == "ewa":
+            from solutions.ewa import main_process_factor_ewa
+
+            data_desc_fac_sig.lag = cfg.factors.lag
+            main_process_factor_ewa(
+                span=span,
+                codes=codes,
+                cfg_factors=cfg.factors,
+                data_desc_fac_sig=data_desc_fac_sig,
+                dst_db=cfg_dbs.user,
+                table_fac_ewa=cfg_tables.fac_ewa,
             )

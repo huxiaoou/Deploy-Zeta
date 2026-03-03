@@ -26,6 +26,7 @@ cls_prv_cache
 echo "$(date +'%Y-%m-%d %H:%M:%S') old data removed"
 
 bgn_date_fac="20170103"
+bgn_date_fac_ewa="20170405"
 bgn_date_opt="20171009"
 bgn_date="20180102"
 
@@ -38,5 +39,5 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') factor nrm generated"
 python main.py --bgn $bgn_date_fac --end $end_date factors --type sig
 echo "$(date +'%Y-%m-%d %H:%M:%S') signals generated"
 
-python main.py --bgn $bgn_date_fac --end $end_date factors --type ewa
+python main.py --bgn $bgn_date_fac_ewa --end $end_date factors --type ewa
 echo "$(date +'%Y-%m-%d %H:%M:%S') signals generated"
