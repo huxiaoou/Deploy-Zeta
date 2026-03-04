@@ -48,3 +48,6 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') quick simulation for single factor"
 
 python main.py --bgn $bgn_date_opt --end $end_date optimize --type fac
 echo "$(date +'%Y-%m-%d %H:%M:%S') weights for factors portfolios optimized"
+
+python main.py --bgn $bgn_date --end $end_date signals
+echo "$(date +'%Y-%m-%d %H:%M:%S') signals optimized"

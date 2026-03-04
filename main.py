@@ -26,6 +26,9 @@ def parse_args():
     arg_parser_sub = arg_parser_subs.add_parser(name="optimize", help="Optimize weights for factors or sectors")
     arg_parser_sub.add_argument("--type", type=str, choices=("fac",))
 
+    # switch: signals
+    arg_parser_sub = arg_parser_subs.add_parser(name="signals", help="generate signals")
+
     return arg_parser.parse_args()
 
 
@@ -43,6 +46,8 @@ if __name__ == "__main__":
         data_desc_preprocess,
         data_desc_pv1m,
         data_desc_avlb,
+        data_desc_css,
+        data_desc_icov,
     )
 
     args = parse_args()
@@ -131,3 +136,19 @@ if __name__ == "__main__":
                 dst_db=cfg_dbs.user,
                 table_optimize_fac=cfg_tables.optimize_fac,
             )
+    elif args.switch == "signals":
+        from solutions.sig import main_process_signals_stg
+
+        main_process_signals_stg(
+            span=span,
+            codes=codes,
+            tgt_rets=cfg.tgt_rets,
+            factors=cfg.factors.to_list(),
+            data_desc_sig_fac=data_desc_fac_ewa,
+            data_desc_optimize_fac=data_desc_optimize_fac,
+            data_desc_css=data_desc_css,
+            data_desc_icov=data_desc_icov,
+            data_desc_avlb=data_desc_avlb,
+            dst_db=cfg_dbs.user,
+            table_sig_stg=cfg_tables.sig_stg,
+        )

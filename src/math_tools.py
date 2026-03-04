@@ -116,6 +116,24 @@ def cal_roll_return(x: pd.Series, ticker_n: str, ticker_d: str, prc_n: str, prc_
         return np.nan
 
 
+def adj_cov(raw_wgt: pd.Series, icov: pd.DataFrame) -> pd.Series:
+    sort_wgt = raw_wgt.sort_values(ascending=False)
+    w0 = sort_wgt.to_numpy()
+    k, k0 = len(w0), len(w0[w0 >= 0])
+    k1 = k - k0
+    top_list = sort_wgt.head(k0).index.tolist()
+    btm_list = sort_wgt.tail(k1).index.tolist()
+    cov_top = icov.loc[top_list, top_list]
+    cov_btm = icov.loc[btm_list, btm_list]
+    w_top, w_btm = w0[0:k0], w0[-k1:]
+    var_top, var_btm = w_top @ cov_top @ w_top, w_btm @ cov_btm @ w_btm
+    top_btm_ratio = np.sqrt(var_top / var_btm)
+    w0[-k1:] = w0[-k1:] * top_btm_ratio
+    w0 = w0 / np.sum(np.abs(w0))
+    res = pd.Series(data=w0, index=sort_wgt.index)
+    return res[raw_wgt.index]
+
+
 # --------------- Algs for factors ---------------
 
 
