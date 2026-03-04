@@ -22,6 +22,8 @@ rm_tqdb $udb --table "$pid"_tbl_fac_nrm_"$vid"
 rm_tqdb $udb --table "$pid"_tbl_fac_sig_"$vid"
 rm_tqdb $udb --table "$pid"_tbl_fac_ewa_"$vid"
 rm_tqdb $udb --table "$pid"_tbl_sim_fac_"$vid"
+rm_tqdb $udb --table "$pid"_tbl_optimize_fac_"$vid"
+rm_tqdb $udb --table "$pid"_tbl_sig_stg_"$vid"
 
 cls_prv_cache
 echo "$(date +'%Y-%m-%d %H:%M:%S') old data removed"
