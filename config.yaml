@@ -65,6 +65,8 @@ default_decay:
   win: 5
 
 factors:
+  basis:
+    args: 60
   reoc:
     args: [240, 3]
 

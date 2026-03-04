@@ -21,6 +21,7 @@ rm_tqdb $udb --table "$pid"_tbl_fac_raw_"$vid"
 rm_tqdb $udb --table "$pid"_tbl_fac_nrm_"$vid"
 rm_tqdb $udb --table "$pid"_tbl_fac_sig_"$vid"
 rm_tqdb $udb --table "$pid"_tbl_fac_ewa_"$vid"
+rm_tqdb $udb --table "$pid"_tbl_sim_fac_"$vid"
 
 cls_prv_cache
 echo "$(date +'%Y-%m-%d %H:%M:%S') old data removed"
@@ -37,10 +38,10 @@ python main.py --bgn $bgn_date_fac --end $end_date factors --type nrm
 echo "$(date +'%Y-%m-%d %H:%M:%S') factor nrm generated"
 
 python main.py --bgn $bgn_date_fac --end $end_date factors --type sig
-echo "$(date +'%Y-%m-%d %H:%M:%S') signals generated"
+echo "$(date +'%Y-%m-%d %H:%M:%S') factor sig generated"
 
 python main.py --bgn $bgn_date_fac_ewa --end $end_date factors --type ewa
-echo "$(date +'%Y-%m-%d %H:%M:%S') signals generated"
+echo "$(date +'%Y-%m-%d %H:%M:%S') factor ewa generated"
 
 python main.py --bgn $bgn_date_fac_ewa --end $end_date simulations --type fac
 echo "$(date +'%Y-%m-%d %H:%M:%S') quick simulation for single factor"

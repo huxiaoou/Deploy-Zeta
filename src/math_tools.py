@@ -101,9 +101,6 @@ def cal_res(y: pd.DataFrame, x: pd.DataFrame) -> pd.Series:
     return y.iloc[-1, :] - beta * x.iloc[-1, :]  # type:ignore
 
 
-# --------------- Algs for factors ---------------
-
-
 def cal_roll_return(x: pd.Series, ticker_n: str, ticker_d: str, prc_n: str, prc_d: str):
     if x.isnull().any():
         return np.nan
@@ -117,6 +114,13 @@ def cal_roll_return(x: pd.Series, ticker_n: str, ticker_d: str, prc_n: str, prc_
             return np.nan
     else:
         return np.nan
+
+
+# --------------- Algs for factors ---------------
+
+
+def cal_basis(basis_rate: pd.DataFrame, win: int) -> pd.Series:
+    return basis_rate.tail(win).mean()
 
 
 def cal_reoc_by_minute(tday_minb_data: pd.DataFrame, eff: str = "eff", ret: str = "ret") -> float:
