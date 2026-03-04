@@ -3,7 +3,7 @@ from qtools_sxzq.qwidgets import check_and_mkdir
 from qtools_sxzq.qdata import CDataDescriptor, CMarketDescriptor
 from typedef import TUniverse, CCfgInstru, TSectors
 from typedef_factor import CCfgFactors
-from typedef import CCfgProj, CCfgTables, CCfgDbs, CCfgQSim, CCfgCSim
+from typedef import CCfgProj, CCfgTables, CCfgDbs, CCfgQSim, CCfgCSim, CCfgOptimizer
 
 
 with open("config.yaml", "r") as f:
@@ -28,6 +28,7 @@ cfg = CCfgProj(
     factors=cfg_factors,
     qsim=CCfgQSim(**_config["qsim"]),
     csim=CCfgCSim(**_config["csim"]),
+    optimizer_fac=CCfgOptimizer(**_config["optimizer"]["fac"]),
     tgt_rets=_config["tgt_rets"],
 )
 check_and_mkdir(cfg.project_data_dir)
@@ -118,6 +119,22 @@ data_desc_fac_ewa = CDataDescriptor(
     table_name=cfg_tables.fac_ewa,
     codes=cfg.codes,
     fields=cfg.factors.to_list(),
+    lag=20,
+    data_view_type="data3d",
+)
+data_desc_sim_fac = CDataDescriptor(
+    db_name=cfg_dbs.user,
+    table_name=cfg_tables.sim_fac,
+    codes=cfg.sim_codes_fac,
+    fields=["raw_ret", "dlt_wgt", "cost", "net_ret"],
+    lag=365,
+    data_view_type="data3d",
+)
+data_desc_optimize_fac = CDataDescriptor(
+    db_name=cfg_dbs.user,
+    table_name=cfg_tables.optimize_fac,
+    codes=cfg.factors.to_list(),
+    fields=cfg.tgt_rets,
     lag=20,
     data_view_type="data3d",
 )

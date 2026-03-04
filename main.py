@@ -22,6 +22,10 @@ def parse_args():
     arg_parser_sub.add_argument("--type", type=str, choices=("fac", "stg"))
     arg_parser_sub.add_argument("--omit", default=False, action="store_true")
 
+    # switch: optimize
+    arg_parser_sub = arg_parser_subs.add_parser(name="optimize", help="Optimize weights for factors or sectors")
+    arg_parser_sub.add_argument("--type", type=str, choices=("fac",))
+
     return arg_parser.parse_args()
 
 
@@ -34,6 +38,8 @@ if __name__ == "__main__":
         data_desc_fac_nrm,
         data_desc_fac_sig,
         data_desc_fac_ewa,
+        data_desc_optimize_fac,
+        data_desc_sim_fac,
         data_desc_preprocess,
         data_desc_pv1m,
         data_desc_avlb,
@@ -112,3 +118,16 @@ if __name__ == "__main__":
                 vid=cfg.vid,
             )
             sim_quick.main(span=span, ret_win=cfg.qsim.win)
+    elif args.switch == "optimize":
+        if args.type == "fac":
+            from solutions.optimize import main_process_optimize_fac_wgt
+
+            main_process_optimize_fac_wgt(
+                span=span,
+                factors=cfg.factors.to_list(),
+                tgt_rets=cfg.tgt_rets,
+                cfg_optimizer_fac=cfg.optimizer_fac,
+                data_desc_sim=data_desc_sim_fac,
+                dst_db=cfg_dbs.user,
+                table_optimize_fac=cfg_tables.optimize_fac,
+            )

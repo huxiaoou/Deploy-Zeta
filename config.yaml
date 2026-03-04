@@ -73,6 +73,12 @@ factors:
 # --- returns ---
 tgt_rets: [opn, cls]
 
+# --- optimizer ---
+optimizer:
+  fac:
+    window: 240
+    lbd: 1.0
+
 # --- simluations ---
 qsim:
   win: 1

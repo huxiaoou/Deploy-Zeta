@@ -45,3 +45,6 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') factor ewa generated"
 
 python main.py --bgn $bgn_date_fac_ewa --end $end_date simulations --type fac
 echo "$(date +'%Y-%m-%d %H:%M:%S') quick simulation for single factor"
+
+python main.py --bgn $bgn_date_opt --end $end_date optimize --type fac
+echo "$(date +'%Y-%m-%d %H:%M:%S') weights for factors portfolios optimized"

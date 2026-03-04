@@ -1,3 +1,4 @@
+from itertools import product
 from dataclasses import dataclass
 from typing import Literal
 from typedef_factor import CCfgFactors
@@ -28,6 +29,12 @@ class CCfgCSim:
 
 
 @dataclass(frozen=True)
+class CCfgOptimizer:
+    window: int
+    lbd: float
+
+
+@dataclass(frozen=True)
 class CCfgProj:
     pid: str
     vid: str
@@ -37,7 +44,12 @@ class CCfgProj:
     factors: CCfgFactors
     qsim: CCfgQSim
     csim: CCfgCSim
+    optimizer_fac: CCfgOptimizer
     tgt_rets: list[str]
+
+    @property
+    def sim_codes_fac(self) -> list[str]:
+        return [f"{fac}-{ret}" for fac, ret in product(self.factors.to_list(), self.tgt_rets)]
 
 
 @dataclass(frozen=True)
