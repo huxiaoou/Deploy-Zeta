@@ -17,6 +17,11 @@ def parse_args():
     arg_parser_sub = arg_parser_subs.add_parser(name="factors", help="Calculate factors")
     arg_parser_sub.add_argument("--type", type=str, choices=("raw", "nrm", "sig", "ewa"))
 
+    # switch: simulations
+    arg_parser_sub = arg_parser_subs.add_parser(name="simulations", help="do simulations")
+    arg_parser_sub.add_argument("--type", type=str, choices=("fac", "stg"))
+    arg_parser_sub.add_argument("--omit", default=False, action="store_true")
+
     return arg_parser.parse_args()
 
 
@@ -90,3 +95,20 @@ if __name__ == "__main__":
                 dst_db=cfg_dbs.user,
                 table_fac_ewa=cfg_tables.fac_ewa,
             )
+    elif args.switch == "simulations":
+        if args.type == "fac":
+            from solutions.qsim import CSimQuick
+
+            sim_quick = CSimQuick(
+                codes=codes,
+                cfg_factors=cfg.factors,
+                data_desc_pv=data_desc_preprocess,
+                data_desc_fac_ewa=data_desc_fac_ewa,
+                tgt_rets=cfg.tgt_rets,
+                cost_rate=cfg.csim.cost_rate_sub,
+                dst_db=cfg_dbs.user,
+                table_sim_fac=cfg_tables.sim_fac,
+                project_data_dir=cfg.project_data_dir,
+                vid=cfg.vid,
+            )
+            sim_quick.main(span=span, ret_win=cfg.qsim.win)

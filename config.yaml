@@ -68,7 +68,12 @@ factors:
   reoc:
     args: [240, 3]
 
+# --- returns ---
+tgt_rets: [opn, cls]
+
 # --- simluations ---
+qsim:
+  win: 1
 csim:
   init_cash: 100_000_000.00
   oi_cap_ratio: 0.01

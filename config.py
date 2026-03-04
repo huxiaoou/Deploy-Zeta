@@ -3,7 +3,7 @@ from qtools_sxzq.qwidgets import check_and_mkdir
 from qtools_sxzq.qdata import CDataDescriptor, CMarketDescriptor
 from typedef import TUniverse, CCfgInstru, TSectors
 from typedef_factor import CCfgFactors
-from typedef import CCfgProj, CCfgTables, CCfgDbs, CCfgCSim
+from typedef import CCfgProj, CCfgTables, CCfgDbs, CCfgQSim, CCfgCSim
 
 
 with open("config.yaml", "r") as f:
@@ -26,7 +26,9 @@ cfg = CCfgProj(
     path_calendar=_config["path_calendar"],
     codes=list(universe),
     factors=cfg_factors,
+    qsim=CCfgQSim(**_config["qsim"]),
     csim=CCfgCSim(**_config["csim"]),
+    tgt_rets=_config["tgt_rets"],
 )
 check_and_mkdir(cfg.project_data_dir)
 

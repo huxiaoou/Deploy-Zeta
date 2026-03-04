@@ -41,3 +41,6 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') signals generated"
 
 python main.py --bgn $bgn_date_fac_ewa --end $end_date factors --type ewa
 echo "$(date +'%Y-%m-%d %H:%M:%S') signals generated"
+
+python main.py --bgn $bgn_date_fac_ewa --end $end_date simulations --type fac
+echo "$(date +'%Y-%m-%d %H:%M:%S') quick simulation for single factor"

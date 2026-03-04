@@ -15,6 +15,11 @@ TSectors = list[str]
 
 
 @dataclass(frozen=True)
+class CCfgQSim:
+    win: int
+
+
+@dataclass(frozen=True)
 class CCfgCSim:
     init_cash: float
     oi_cap_ratio: float
@@ -30,7 +35,9 @@ class CCfgProj:
     path_calendar: str
     codes: list[str]
     factors: CCfgFactors
+    qsim: CCfgQSim
     csim: CCfgCSim
+    tgt_rets: list[str]
 
 
 @dataclass(frozen=True)
@@ -49,3 +56,13 @@ class CCfgDbs:
     public: str
     basic: str
     user: str
+
+
+@dataclass(frozen=True)
+class CSimArgs:
+    sig: str
+    ret: str
+
+    @property
+    def save_id(self) -> str:
+        return f"{self.sig}-{self.ret}"
