@@ -43,6 +43,7 @@ if __name__ == "__main__":
         data_desc_fac_ewa,
         data_desc_optimize_fac,
         data_desc_sim_fac,
+        data_desc_sig_stg,
         data_desc_preprocess,
         data_desc_pv1m,
         data_desc_avlb,
@@ -123,6 +124,63 @@ if __name__ == "__main__":
                 vid=cfg.vid,
             )
             sim_quick.main(span=span, ret_win=cfg.qsim.win)
+        elif args.type == "stg":
+            import os
+            from solutions.csim import main_process_sim_cmplx
+            from solutions.csim import main_process_sim_dual_sub
+            from solutions.eval import CMultiEvaluator
+            from config import mkt_desc_fut, universe
+
+            # mkt_desc_fut.settle_price_field = "close"
+            for tgt_ret in cfg.tgt_rets:
+                exe_price = "open_major" if tgt_ret == "opn" else "close_major"
+                main_process_sim_cmplx(
+                    span=span,
+                    codes=codes,
+                    sig=tgt_ret,
+                    data_desc_sig=data_desc_sig_stg,
+                    exe_price=exe_price,
+                    oi_cap_ratio=cfg.csim.oi_cap_ratio,
+                    data_desc_pv=data_desc_preprocess,
+                    mkt_desc_fut=mkt_desc_fut,
+                    project_data_dir=cfg.project_data_dir,
+                    universe=universe,
+                    vid=cfg.vid,
+                    using_sxzq_dlz=not args.omit,
+                )
+            sig_0, sig_1 = "opn", "cls"
+            exe_price_0, exe_price_1 = "open_major", "close_major"
+            main_process_sim_dual_sub(
+                span=span,
+                codes=codes,
+                sig_0=sig_0,
+                exe_price_0=exe_price_0,
+                sig_1=sig_1,
+                exe_price_1=exe_price_1,
+                oi_cap_ratio=cfg.csim.oi_cap_ratio,
+                data_desc_sig=data_desc_sig_stg,
+                data_desc_pv=data_desc_preprocess,
+                mkt_desc_fut=mkt_desc_fut,
+                project_data_dir=cfg.project_data_dir,
+                universe=universe,
+                vid=cfg.vid,
+                using_sxzq_dlz=not args.omit,
+            )
+            mulit_evaluator = CMultiEvaluator(
+                perf_paths=[
+                    os.path.join(cfg.project_data_dir, "perfs", f"perf_{sig_0}-{exe_price_0}.{cfg.vid}.csv"),
+                    os.path.join(cfg.project_data_dir, "perfs", f"perf_{sig_1}-{exe_price_1}.{cfg.vid}.csv"),
+                    os.path.join(cfg.project_data_dir, "perfs", f"perf_dualSubs.{cfg.vid}.csv"),
+                ],
+                ret_lbl="日收益率",
+                date_lbl="date",
+                short_ids=["open", "close", "dual"],
+                by_year_ids=["dual"],
+                project_data_dir=cfg.project_data_dir,
+                src_id="csim",
+                vid=cfg.vid,
+            )
+            mulit_evaluator.main()
     elif args.switch == "optimize":
         if args.type == "fac":
             from solutions.optimize import main_process_optimize_fac_wgt

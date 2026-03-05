@@ -53,3 +53,6 @@ echo "$(date +'%Y-%m-%d %H:%M:%S') weights for factors portfolios optimized"
 
 python main.py --bgn $bgn_date --end $end_date signals
 echo "$(date +'%Y-%m-%d %H:%M:%S') signals optimized"
+
+python main.py --bgn $bgn_date --end $end_date simulations --type stg --omit
+echo "$(date +'%Y-%m-%d %H:%M:%S') complex simualations done"

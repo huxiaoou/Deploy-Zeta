@@ -138,6 +138,14 @@ data_desc_optimize_fac = CDataDescriptor(
     lag=20,
     data_view_type="data3d",
 )
+data_desc_sig_stg = CDataDescriptor(
+    db_name=cfg_dbs.user,
+    table_name=cfg_tables.sig_stg,
+    codes=cfg.codes,
+    fields=cfg.tgt_rets,
+    lag=20,
+    data_view_type="data3d",
+)
 
 
 mkt_desc_fut = CMarketDescriptor(
